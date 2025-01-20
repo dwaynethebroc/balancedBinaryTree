@@ -25,7 +25,7 @@ function masterFunction(array){
     const myTree = buildTree(duplicatesremovedArray, 0, duplicatesremovedArray.length - 1);
     console.log('buildTree function finished')
     prettyPrint(myTree);
-    console.log(`Return value of buildTree function: ${myTree}`);
+    console.log(`Return value of buildTree function: ${myTree.data}`);
 
 }
 
