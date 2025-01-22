@@ -75,6 +75,22 @@ function insert(root, value){
     return root;
 }
 
+//helper function to locate successor node to replace in delete node function
+function getSucessor(currentNode) {
+    //Traverse one node right to higher value
+    currentNode = currentNode.right;
+
+    //Then traverse left all the way until there is no children nodes to the left anymore
+    //Replace root node with that value
+    while (currentNode !== null && currentNode.left !== null) {
+        currentNode = currentNode.left;
+    }
+    
+    console.log(`GETSUCCESSOR FXN -> NODE TO BE REPLACED: ${currentNode.data}`);
+    return currentNode;
+}
+
+//Delete item of specfic value and update binary tree
 function deleteItem(root, value){
     //base case
     //if the node doesn't exist, return
@@ -83,32 +99,43 @@ function deleteItem(root, value){
     }
 
     //move to left child if value is lower
-    if(value < root.data){
-        deleteItem(root.left, value);
+    if(root.data > value){
+        root.left = deleteItem(root.left, value);
     } 
     //move to right child if value is higher
-    else if(value > root.data){
-        deleteItem(root.right, value);
+    else if(root.data < value){
+        root.right = deleteItem(root.right, value);
     } 
     //If root data matches...
     else {
+        console.log(root);
         //CASE 1
         //Only right child
         if(root.left === null){
-            console.log(`Value found and deleted. Right children node`);
             return root.right;
         }
         //Only left child
         if(root.right === null){
-            console.log(`Value found and deleted. Left children node`);
             return root.left;
         }
 
         
         //When two children nodes are present
-        
+        //get node that node needs to be replaced with
+        let successorNode = getSucessor(root);
+        //Replace that node to root's position
+        root.data = successorNode.data;
+        console.log(`Value found and deleted. Both children nodes`);
+        //Continue on with traversing recursively the BBT
+        root.right = deleteItem(root.right, successorNode.data)
     }
     
+    return root;
+}
+
+//find value at node function
+function find(value){
+
 }
 
 //Sort functions
@@ -167,3 +194,16 @@ insert(myBinaryTree, 20);
 insert(myBinaryTree, 500);
 insert(myBinaryTree, 42);
 
+prettyPrint(myBinaryTree);
+
+deleteItem(myBinaryTree, 67);
+deleteItem(myBinaryTree, 3);
+deleteItem(myBinaryTree, 5);
+
+prettyPrint(myBinaryTree);
+
+insert(myBinaryTree, 79);
+insert(myBinaryTree, 999);
+insert(myBinaryTree, 2);
+
+prettyPrint(myBinaryTree);
