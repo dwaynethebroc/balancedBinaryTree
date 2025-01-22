@@ -81,21 +81,34 @@ function deleteItem(root, value){
     if(root === null){
         return root;
     }
-    //no duplicate values
-    if(root.data === value){
-        console.log(`Value found and deleted`);
-        return root;
-    }
+
     //move to left child if value is lower
-    //move to right child if value is higher
-    //if there are no children, base case creates new node to be attached with value
     if(value < root.data){
         deleteItem(root.left, value);
-    } else if(value > root.data){
+    } 
+    //move to right child if value is higher
+    else if(value > root.data){
         deleteItem(root.right, value);
-    }
+    } 
+    //If root data matches...
+    else {
+        //CASE 1
+        //Only right child
+        if(root.left === null){
+            console.log(`Value found and deleted. Right children node`);
+            return root.right;
+        }
+        //Only left child
+        if(root.right === null){
+            console.log(`Value found and deleted. Left children node`);
+            return root.left;
+        }
 
-    return root;
+        
+        //When two children nodes are present
+        
+    }
+    
 }
 
 //Sort functions
