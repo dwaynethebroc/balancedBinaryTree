@@ -75,10 +75,6 @@ function insert(root, value){
     return root;
 }
 
-
-
-
-
 //helper function to locate successor node to replace in delete node function
 function getSucessor(currentNode) {
     //Traverse one node right to higher value
@@ -163,6 +159,49 @@ function find(root, value) {
     }
 }
 
+//Level Order callbackfunction
+//Traverse the tree and call the callback on each node as it traverses passing the whole node as an argument
+//breadth-first level order
+function levelOrder(root, callbackFunction){
+    if (typeof(callbackFunction) !== 'function') {
+        throw new Error('supply a callback function!!!');
+    }
+
+    //FIFO array 
+    const FIFOArray = [];
+
+    //base case to exit out of recurison, return the root
+    if (root === null) {
+        console.log(`End traverse with value of: ${root.data}`);
+        return root; 
+    }
+
+    //If left child, add to array
+    if(root.left !== null){
+        FIFOArray.push(root.left);
+    }
+
+    //If right child, add to array
+    if(root.right !== null){
+        FIFOArray.push(root.right) 
+    }
+
+    FIFOArray.forEach((node) => callbackFunction(node));
+    
+
+    if(root.left !== null){
+        levelOrder(root.left, logTheNodes)
+    }
+    
+    if(root.right !== null){
+        levelOrder(root.right, logTheNodes)
+    }
+}
+//helper function to test orderLevel
+function logTheNodes(node) {
+    console.log(node);
+}
+
 //Sort functions
 function mergeSort(arr){
     const mid = Math.floor(arr.length / 2);
@@ -215,38 +254,32 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 //Example function 
 const myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const myBinaryTree = masterFunction(myArray);
+console.log(myBinaryTree);
 insert(myBinaryTree, 20);
-console.log(myBinaryTree);
 insert(myBinaryTree, 500);
-console.log(myBinaryTree);
 insert(myBinaryTree, 42);
-console.log(myBinaryTree);
 
 prettyPrint(myBinaryTree);
 console.log(myBinaryTree);
 
 deleteItem(myBinaryTree, 67);
-console.log(myBinaryTree);
 deleteItem(myBinaryTree, 3);
-console.log(myBinaryTree);
 deleteItem(myBinaryTree, 5);
-console.log(myBinaryTree);
 
 prettyPrint(myBinaryTree);
+console.log(myBinaryTree);
 
-console.log(myBinaryTree);
 insert(myBinaryTree, 79);
-console.log(myBinaryTree);
 insert(myBinaryTree, 999);
-console.log(myBinaryTree);
 insert(myBinaryTree, 2);
 
 prettyPrint(myBinaryTree);
-
 console.log(myBinaryTree);
 
 find(myBinaryTree, 2);
-console.log(myBinaryTree);
 find(myBinaryTree, 33);
-console.log(myBinaryTree);
 find(myBinaryTree, 999);
+
+console.log(myBinaryTree);
+
+levelOrder(myBinaryTree, logTheNodes);
