@@ -30,6 +30,55 @@ function masterFunction(array){
     return myTree;
 }
 
+//Sort functions
+function mergeSort(arr){
+    const mid = Math.floor(arr.length / 2);
+    const leftList = arr.slice(0, mid);
+    const rightList = arr.slice(mid);
+
+    if (arr.length === 1){
+        return arr;
+    } else {
+        const result = merge(mergeSort(leftList), (mergeSort(rightList)));
+        return result;
+    }
+}
+
+function merge(leftList, rightList){
+    const sortedArray = [];
+    let i = 0;
+    let j = 0;
+
+    while (i < leftList.length && j < rightList.length) {
+        if (leftList[i] < rightList[j]) {
+            sortedArray.push(leftList[i]);
+            i++;
+        } else {
+            sortedArray.push(rightList[j]);
+            j++;
+        }
+    }
+
+    const leftUnfinished = leftList.slice(i);
+    const rightUnfinished = rightList.slice(j);
+
+    return sortedArray.concat(leftUnfinished).concat(rightUnfinished);
+}
+
+//Print out tree function
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+    if (node === null) {
+      return;
+    }
+    if (node.right !== null) {
+      prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    if (node.left !== null) {
+      prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    }
+};
+
 //Make the binary tree function
 function buildTree(array, start, end) {
     //base case: if there is only one element, make it a node and have no children
@@ -241,54 +290,51 @@ function logTheNodes(node) {
     console.log(node);
 }
 
-//Sort functions
-function mergeSort(arr){
-    const mid = Math.floor(arr.length / 2);
-    const leftList = arr.slice(0, mid);
-    const rightList = arr.slice(mid);
-
-    if (arr.length === 1){
-        return arr;
-    } else {
-        const result = merge(mergeSort(leftList), (mergeSort(rightList)));
-        return result;
-    }
-}
-
-function merge(leftList, rightList){
-    const sortedArray = [];
-    let i = 0;
-    let j = 0;
-
-    while (i < leftList.length && j < rightList.length) {
-        if (leftList[i] < rightList[j]) {
-            sortedArray.push(leftList[i]);
-            i++;
-        } else {
-            sortedArray.push(rightList[j]);
-            j++;
-        }
+//Left -> Root -> Right
+function inOrder(node, callbackFunction) {
+    if (typeof(callbackFunction) !== 'function') {
+        throw new Error('supply a callback function!!!');
     }
 
-    const leftUnfinished = leftList.slice(i);
-    const rightUnfinished = rightList.slice(j);
-
-    return sortedArray.concat(leftUnfinished).concat(rightUnfinished);
-}
-
-//Print out tree function
-const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
-      return;
+        return;
     }
-    if (node.right !== null) {
-      prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+
+    inOrder(node.left, callbackFunction);
+    callbackFunction(node)
+    inOrder(node.right, callbackFunction);
+}
+
+//Root -> Left -> Right
+function preOrder(node, callbackFunction){
+    if (typeof(callbackFunction) !== 'function') {
+        throw new Error('supply a callback function!!!');
     }
-    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-    if (node.left !== null) {
-      prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+
+    if (node === null) {
+        return;
     }
-};
+    callbackFunction(node);
+    preOrder(node.left, callbackFunction);
+    preOrder(node.right, callbackFunction);
+}
+
+//Left -> Right -> Root
+function postOrder(node, callbackFunction){
+    if (typeof(callbackFunction) !== 'function') {
+        throw new Error('supply a callback function!!!');
+    }
+
+    if (node === null) {
+        return;
+    }
+
+    preOrder(node.left, callbackFunction);
+    preOrder(node.right, callbackFunction);
+    callbackFunction(node);
+}
+
+
 
 //Example function 
 const myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -313,12 +359,15 @@ insert(myBinaryTree, 999);
 insert(myBinaryTree, 2);
 
 prettyPrint(myBinaryTree);
-console.log(myBinaryTree);
 
-find(myBinaryTree, 2);
-find(myBinaryTree, 33);
-find(myBinaryTree, 999);
+// find(myBinaryTree, 2);
+// find(myBinaryTree, 33);
+// find(myBinaryTree, 999);
 
-console.log(myBinaryTree);
+// console.log(myBinaryTree);
 
-levelOrder(myBinaryTree, logTheNodes);
+// levelOrder(myBinaryTree, logTheNodes);
+
+// inOrder(myBinaryTree, logTheNodes);
+// preOrder(myBinaryTree, logTheNodes);
+postOrder(myBinaryTree, logTheNodes);
