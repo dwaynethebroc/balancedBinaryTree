@@ -167,35 +167,74 @@ function levelOrder(root, callbackFunction){
         throw new Error('supply a callback function!!!');
     }
 
-    //FIFO array 
-    const FIFOArray = [];
+    //iterative method
+    // //FIFO array 
+    // const FIFOArray = [];
+    // let i = 0;
 
     //base case to exit out of recurison, return the root
-    if (root === null) {
-        console.log(`End traverse with value of: ${root.data}`);
-        return root; 
-    }
+    // if (root === null) {
+    //     console.log(`End traverse with value of: ${root.data}`);
+    //     return root; 
+    // }
+    // //If left child, add to array
+    // if(root.left !== null){
+    //     FIFOArray.push(root.left);
+    // }
 
-    //If left child, add to array
-    if(root.left !== null){
-        FIFOArray.push(root.left);
-    }
+    // //If right child, add to array
+    // if(root.right !== null){
+    //     FIFOArray.push(root.right) 
+    // }
 
-    //If right child, add to array
-    if(root.right !== null){
-        FIFOArray.push(root.right) 
-    }
-
-    FIFOArray.forEach((node) => callbackFunction(node));
     
 
-    if(root.left !== null){
-        levelOrder(root.left, logTheNodes)
+    // while(i < FIFOArray.length){
+    //     logTheNodes(FIFOArray[i]);
+
+    //     if(FIFOArray[i].left !== null){
+    //         FIFOArray.push(FIFOArray[i].left)
+    //     }
+        
+    //     if(FIFOArray[i].right !== null){
+    //         FIFOArray.push(FIFOArray[i].right)
+    //     }
+    //     i++;
+    // }
+
+    //recursive method
+    //array to store levels and values
+    const output = [];
+    let i = 0;
+
+    //helper function to recursively add nodes to list
+    function getOutput(node, level){
+        //base case - if node doesn't exist, return
+        if(!node) return;
+
+        //if array of this level exists, push data to it
+        if(output[level]){
+            output[level].push(node.data);
+        } else {
+            //if this is the first node of a new depth level, create the level and level[0] equals this node
+            output[level] = [node.data];
+        }
+        //go to next level down of child, and add a level by making a new array index
+        getOutput(node.left, level + 1);
+        getOutput(node.right, level + 1);
     }
-    
-    if(root.right !== null){
-        levelOrder(root.right, logTheNodes)
-    }
+
+    //call the root node
+    getOutput(root, 0);
+    //show the array of arrays
+    console.log(output);
+
+    //print out each of the nodes in the multi-dimensional array
+    output.forEach((array) => 
+        array.forEach((node) => logTheNodes(node))
+    );
+
+    return output;
 }
 //helper function to test orderLevel
 function logTheNodes(node) {
