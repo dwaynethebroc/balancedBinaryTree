@@ -329,17 +329,103 @@ function postOrder(node, callbackFunction){
         return;
     }
 
-    preOrder(node.left, callbackFunction);
-    preOrder(node.right, callbackFunction);
+    postOrder(node.left, callbackFunction);
+    postOrder(node.right, callbackFunction);
     callbackFunction(node);
 }
 
+//calculate the number of steps between a given node to its farthest leaf node
+function height(node){
+    if (node === null){
+        return -1;
+    }
+
+    let countLeft = height(node.left);
+    let countRight = height(node.right);
+
+    return Math.max(countLeft, countRight) + 1;
+}
+
+//calculate the number of steps between the root node and the target node 
+function depth(targetNode, root){
+    // base case: if node is null or root is null, return -1 
+    if (targetNode === null || root === null){
+        return -1;
+    }
+
+    if (targetNode === root) {
+        return 0;
+    }
+
+    //recursively search through L + R subtrees 
+    let leftDepth = depth(targetNode, root.left);
+    let rightDepth = depth(targetNode, root.right);
+
+    // If the node is found in the left or right subtree, return the depth + 1
+    if (leftDepth >= 0) {
+        return leftDepth + 1;
+    }
+    if (rightDepth >= 0) {
+        return rightDepth + 1;
+    }
+
+    // If not found, return -1
+    return -1;
+}
+
+//Check if a tree is balanced by comparing height of each subtree
+function isBalanced(tree){
+
+    function checkBalanced(node){
+        // base case: if tree node is null return null 
+        if(node === null){
+            return true;
+        }
+
+        let leftHeight = height(node.left);
+        let rightHeight = height(node.right)
+
+        if(Math.abs(leftHeight - rightHeight) > 1){
+            return false;
+        };
+
+        //check the balance of the left and right
+        return checkBalanced(node.left) && checkBalanced(node.right);
+    }   
+
+    return checkBalanced(tree);
+}
+
+//Rebalance tree - traverse tree in preOrder, add to array, run function again with buildtree
+function reBalance(tree){
+    const arrayToBalance = [];
+
+    function addToArray(node) {
+        arrayToBalance.push(node.data);
+    }
+
+    //call tree traversal function and use helper function to push to array complete tree in order
+    inOrder(tree, addToArray);
+    
+    //check all values are there
+    console.log(arrayToBalance);
+
+    //build new tree
+    let newTree = buildTree(arrayToBalance, 0, arrayToBalance.length - 1);
+
+    //display new tree in console
+    prettyPrint(newTree);
+
+    //return new tree(which is really the root node of 20)
+    return newTree; 
+}
 
 
 //Example function 
 const myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const myBinaryTree = masterFunction(myArray);
 console.log(myBinaryTree);
+// console.log(isBalanced(myBinaryTree));
 insert(myBinaryTree, 20);
 insert(myBinaryTree, 500);
 insert(myBinaryTree, 42);
@@ -370,4 +456,11 @@ prettyPrint(myBinaryTree);
 
 // inOrder(myBinaryTree, logTheNodes);
 // preOrder(myBinaryTree, logTheNodes);
-postOrder(myBinaryTree, logTheNodes);
+// postOrder(myBinaryTree, logTheNodes);
+
+// console.log(height(myBinaryTree.right.left.right.right));
+// console.log(depth(myBinaryTree.right.left.right.right, myBinaryTree));
+
+// console.log(isBalanced(myBinaryTree));
+
+reBalance(myBinaryTree);
