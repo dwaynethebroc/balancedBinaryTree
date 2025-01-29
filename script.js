@@ -438,51 +438,52 @@ function randomArrayBoii(desiredArraySize) {
 }
 
 // MY EXAMPLE FUNCTION
+function myOGDriverFunction(){
+    const myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+    const myBinaryTree = masterFunction(myArray);
+    console.log(myBinaryTree);
+    //  console.log(isBalanced(myBinaryTree));
+    insert(myBinaryTree, 20);
+    insert(myBinaryTree, 500);
+    insert(myBinaryTree, 42);
 
-// const myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-// const myBinaryTree = masterFunction(myArray);
-// console.log(myBinaryTree);
-// //  console.log(isBalanced(myBinaryTree));
-// insert(myBinaryTree, 20);
-// insert(myBinaryTree, 500);
-// insert(myBinaryTree, 42);
+    prettyPrint(myBinaryTree);
+    console.log(myBinaryTree);
 
-// prettyPrint(myBinaryTree);
-// console.log(myBinaryTree);
+    deleteItem(myBinaryTree, 67);
+    deleteItem(myBinaryTree, 3);
+    deleteItem(myBinaryTree, 5);
 
-// deleteItem(myBinaryTree, 67);
-// deleteItem(myBinaryTree, 3);
-// deleteItem(myBinaryTree, 5);
+    prettyPrint(myBinaryTree);
+    console.log(myBinaryTree);
 
-// prettyPrint(myBinaryTree);
-// console.log(myBinaryTree);
+    insert(myBinaryTree, 79);
+    insert(myBinaryTree, 999);
+    insert(myBinaryTree, 2);
 
-// insert(myBinaryTree, 79);
-// insert(myBinaryTree, 999);
-// insert(myBinaryTree, 2);
+    prettyPrint(myBinaryTree);
 
-// prettyPrint(myBinaryTree);
+    find(myBinaryTree, 2);
+    find(myBinaryTree, 33);
+    find(myBinaryTree, 999);
 
-//  find(myBinaryTree, 2);
-//  find(myBinaryTree, 33);
-//  find(myBinaryTree, 999);
+    console.log(myBinaryTree);
 
-//  console.log(myBinaryTree);
+    levelOrder(myBinaryTree, logTheNodes);
 
-//  levelOrder(myBinaryTree, logTheNodes);
+    inOrder(myBinaryTree, logTheNodes);
+    preOrder(myBinaryTree, logTheNodes);
+    postOrder(myBinaryTree, logTheNodes);
 
-//  inOrder(myBinaryTree, logTheNodes);
-//  preOrder(myBinaryTree, logTheNodes);
-//  postOrder(myBinaryTree, logTheNodes);
+    console.log(height(myBinaryTree.right.left.right.right));
+    console.log(depth(myBinaryTree.right.left.right.right, myBinaryTree));
 
-//  console.log(height(myBinaryTree.right.left.right.right));
-//  console.log(depth(myBinaryTree.right.left.right.right, myBinaryTree));
+    console.log(isBalanced(myBinaryTree));
 
-//  console.log(isBalanced(myBinaryTree));
-
-// reBalance(myBinaryTree);
-
+    reBalance(myBinaryTree);
+}
 // Final Test 
+function driverScript() {
 const randoArray = randomArrayBoii(88);
 const testTreeFinal = masterFunction(randoArray);
 console.log(isBalanced(testTreeFinal));
@@ -502,4 +503,6 @@ console.log(isBalanced(testTreeFinal));
 const thanosTree = reBalance(testTreeFinal);
 prettyPrint(thanosTree);
 console.log(isBalanced(thanosTree));
+}
 
+driverScript();
