@@ -13,23 +13,6 @@ class Tree {
     }
 }
 
-// Meta function to call all related functions in order to not mess up recursion in sort and binary tree functions
-function masterFunction(array){
-    console.log(`Original array: ${array}`);
-    console.log(`Merge sort started`);
-    const sortedArray = mergeSort(array); // sorts array with mergeSort only once, instead of including in recursive function
-    console.log(`Merge sort finished: ${sortedArray}`);
-    console.log(`Duplicate Removal function`);
-    const duplicatesremovedArray = [ ...new Set(sortedArray) ]; // ES6 removes array
-    console.log(`Duplicates removed: ${duplicatesremovedArray}`);
-    console.log('buildTree function starting');
-    const myTree = buildTree(duplicatesremovedArray, 0, duplicatesremovedArray.length - 1); // build tree function
-    console.log('buildTree function finished')
-    prettyPrint(myTree); // print Binary tree
-    console.log(`Return value of buildTree function: ${myTree.data}`);
-    return myTree;
-}
-
 // Sort functions
 function mergeSort(arr){
     const mid = Math.floor(arr.length / 2);
@@ -278,11 +261,6 @@ function levelOrder(root, callbackFunction){
     // show the array of arrays
     console.log(output);
 
-    // print out each of the nodes in the multi-dimensional array
-    output.forEach((array) => 
-        array.forEach((node) => logTheNodes(node))
-    );
-
     return output;
 }
 // helper function to test orderLevel
@@ -314,6 +292,8 @@ function preOrder(node, callbackFunction){
     if (node === null) {
         return;
     }
+
+    
     callbackFunction(node);
     preOrder(node.left, callbackFunction);
     preOrder(node.right, callbackFunction);
@@ -332,6 +312,31 @@ function postOrder(node, callbackFunction){
     postOrder(node.left, callbackFunction);
     postOrder(node.right, callbackFunction);
     callbackFunction(node);
+}
+
+//helper function to print array
+function printArrayInOrder(root) {
+    const result = [];
+    inOrder(root, (node) => result.push(node.data));
+    return result;
+}
+
+function printArrayPreOrder(root) {
+    const result = [];
+    preOrder(root, (node) => result.push(node.data));
+    return result;
+}
+
+function printArrayPostOrder(root) {
+    const result = [];
+    postOrder(root, (node) => result.push(node.data));
+    return result;
+}
+
+function printArrayLevelOrder(root) {
+    const result = [];
+    levelOrder(root, (node) => result.push(node.data));
+    return result;
 }
 
 // calculate the number of steps between a given node to its farthest leaf node
@@ -396,11 +401,6 @@ function isBalanced(tree){
     return checkBalanced(tree);
 }
 
-//helper function to print array
-function addToArray(node, arr=[]) {
-    arr.push(node.data);
-}
-
 // Rebalance tree - traverse tree in preOrder, add to array, run function again with buildtree
 function reBalance(tree){
     const arrayToBalance = [];
@@ -437,6 +437,22 @@ function randomArrayBoii(desiredArraySize) {
     return numberHolder;
 }
 
+// Meta function to call all related functions in order to not mess up recursion in sort and binary tree functions
+function masterFunction(array){
+    console.log(`Original array: ${array}`);
+    console.log(`Merge sort started`);
+    const sortedArray = mergeSort(array); // sorts array with mergeSort only once, instead of including in recursive function
+    console.log(`Merge sort finished: ${sortedArray}`);
+    console.log(`Duplicate Removal function`);
+    const duplicatesremovedArray = [ ...new Set(sortedArray) ]; // ES6 removes array
+    console.log(`Duplicates removed: ${duplicatesremovedArray}`);
+    console.log('buildTree function starting');
+    const myTree = buildTree(duplicatesremovedArray, 0, duplicatesremovedArray.length - 1); // build tree function
+    console.log('buildTree function finished')
+    prettyPrint(myTree); // print Binary tree
+    console.log(`Return value of buildTree function: ${myTree.data}`);
+    return myTree;
+}
 // MY EXAMPLE FUNCTION
 function myOGDriverFunction(){
     const myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -484,25 +500,40 @@ function myOGDriverFunction(){
 }
 // Final Test 
 function driverScript() {
-const randoArray = randomArrayBoii(88);
-const testTreeFinal = masterFunction(randoArray);
-console.log(isBalanced(testTreeFinal));
-prettyPrint(testTreeFinal);
-inOrder(testTreeFinal, addToArray);
-preOrder(testTreeFinal, addToArray);
-postOrder(testTreeFinal, addToArray);
+    const randoArray = randomArrayBoii(88);
+    const testTreeFinal = masterFunction(randoArray);
+    console.log(`IS TREE BALANCED??? ----> ${isBalanced(testTreeFinal)}`);
 
-for(let i=0; i<20; i++){
-    const randoNumber = Math.floor(Math.random() * (5000 - 100 + 1) + 100);
-    insert(testTreeFinal, randoNumber);
-}
+    const arrayIO = printArrayInOrder(testTreeFinal);
+    console.log("🚀 ~ driverScript ~ arrayIO:", arrayIO)
+    const arrayPO = printArrayPreOrder(testTreeFinal);
+    console.log("🚀 ~ driverScript ~ arrayPO:", arrayPO)
+    const arrayPOO = printArrayPostOrder(testTreeFinal);
+    console.log("🚀 ~ driverScript ~ arrayPOO:", arrayPOO)
+    const arrayLO = printArrayLevelOrder(testTreeFinal);
+    console.log("🚀 ~ driverScript ~ arrayLO:", arrayLO)
 
-prettyPrint(testTreeFinal);
-console.log(isBalanced(testTreeFinal));
 
-const thanosTree = reBalance(testTreeFinal);
-prettyPrint(thanosTree);
-console.log(isBalanced(thanosTree));
+    for(let i=0; i<20; i++){
+        const randoNumber = Math.floor(Math.random() * (5000 - 100 + 1) + 100);
+        insert(testTreeFinal, randoNumber);
+    }
+
+    console.log(`IS TREE BALANCED??? ----> ${isBalanced(testTreeFinal)}`);
+
+    const thanosTree = reBalance(testTreeFinal);
+    prettyPrint(thanosTree);
+    console.log(`IS TREE BALANCED??? ----> ${isBalanced(thanosTree)}`);
+
+    const arrayIO2 = printArrayInOrder(thanosTree);
+    console.log("🚀 ~ driverScript ~ arrayIO2:", arrayIO2)
+    const arrayPO2 = printArrayPreOrder(thanosTree);
+    console.log("🚀 ~ driverScript ~ arrayPO2:", arrayPO2)
+    const arrayPOO2 = printArrayPostOrder(thanosTree);
+    console.log("🚀 ~ driverScript ~ arrayPOO2:", arrayPOO2)
+    const arrayLO2 = printArrayLevelOrder(thanosTree);
+    console.log("🚀 ~ driverScript ~ arrayLO2:", arrayLO2)
+
 }
 
 driverScript();
